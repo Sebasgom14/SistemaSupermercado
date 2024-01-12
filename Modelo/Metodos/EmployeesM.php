@@ -58,6 +58,7 @@ class EmployeesM
                 $e->setLASTNAME($fila["LASTNAME"]);
                 $e->setPOSITION($fila["POSITION"]);
                 $e->setEMAIL_EMPLOYEES($fila["EMAIL_EMPLOYEES"]);
+                $e->setPASSWORD($fila["PASSWORD"]);
             }
         }
         else

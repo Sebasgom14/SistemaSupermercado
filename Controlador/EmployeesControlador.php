@@ -152,5 +152,24 @@ class EmployeesControlador
         }
     }
 
+    function validatePass(){
+        $est = new \Modelo\Entidades\Employees();
+        $eM = new \Modelo\Metodos\EmployeesM();
+
+        $id = $_SESSION['idUsuario'];
+        $passOld= $_POST["oldPass"];
+        if(($est= $eM->BuscarId($id))!=null) {
+            if(password_verify($passOld,$est->getPASSWORD())){
+               echo json_encode(true);
+            }else {
+                echo json_encode(false);
+            }
+        }else{
+           echo  json_encode(false);
+        }
+
+
+    }
+
 
 }

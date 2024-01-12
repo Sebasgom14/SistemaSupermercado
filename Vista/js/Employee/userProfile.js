@@ -115,7 +115,6 @@ $('#OldPass').on('keydown', function (event) {
         // Verificar si el campo de contraseña no está vacío
         var oldPassword = $(this).val().trim();
         if (oldPassword !== '') {
-            var oldPassword = $("#OldPass").val();
             validePass(oldPassword)
         } else {
             // Mostrar una sweet alert indicando que no hay datos
@@ -130,5 +129,119 @@ $('#OldPass').on('keydown', function (event) {
 
 
 function validePass(pass){
-    alert(pass)
+    $.ajax({
+        url: './index.php?controlador=Employees&accion=validatePass',
+        method: 'POST',
+        dataType: 'json',
+        data:{oldPass:pass},
+        success: function (data) {
+            if (data===true){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Información',
+                    text: '¡Contraseña válida!',
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+
+                // Supongamos que tus dos input tienen los IDs "input1" e "input2"
+                $('#NewPass, #confirmedPass,#RandomPass').removeAttr('disabled');
+                $('#OldPass').prop('disabled', true);
+
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Información',
+                    text: '¡Contraseña no válida!',
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error en la solicitud AJAX:', status, error);
+            console.log(xhr.responseText);
+            console.log(xhr.status);
+            console.log(xhr.statusText);
+        }
+    });
 }
+
+function generatePassword(length) {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset.charAt(randomIndex);
+    }
+    return password;
+}
+
+// Manejador de eventos para el botón
+$("#RandomPass").on("click", function() {
+    const passwordLength = 8;
+    const newPassword = generatePassword(passwordLength);
+    $("#NewPass").val(newPassword);
+    $("#confirmedPass").val(newPassword);
+});
+
+$("#updatePass").on("click", function() {
+   let pass= $("#NewPass").val();
+   let confirmedPass = $("#confirmedPass").val();
+   let id = $("#idPassUser").val();
+
+   if(pass==confirmedPass){
+       $("#confirmedPass ").removeClass('is-invalid')
+       $("#NewPass").removeClass('is-invalid')
+       $("#validationPass").addClass('d-none')
+
+
+       var data = {
+           pass: pass,
+           id: id,
+       };
+
+
+
+       $.ajax({
+           url: './index.php?controlador=Employees&accion=changePass',
+           method: 'POST',
+           data: data,
+           dataType: 'json',
+           success: function (data) {
+               if(data==true){
+                   Swal.fire({
+                       icon: "success",
+                       title: "¡Actualizacion exitoso de la contrasena!",
+                       showConfirmButton: true,
+                       timer: 3500
+                   }).then(() => {
+                       location.reload();
+                       $("#firstPass").val('');
+                       $("#CheckPassword").val('');
+                   });
+               }else{
+                   Swal.fire({
+                       icon: "danger",
+                       title: "¡Actualizacion no exitoso de la contrasena!",
+                       showConfirmButton: true,
+                       timer: 2500
+                   });
+               }
+           },
+           error: function (xhr, status, error) {
+               console.error('Error en la solicitud AJAX:', status, error);
+               console.log(xhr.responseText);
+               console.log(xhr.status);
+               console.log(xhr.statusText);
+           }
+       });
+   }else{
+       $("#confirmedPass ").addClass('is-invalid')
+       $("#NewPass ").addClass('is-invalid')
+       $("#validationPass").removeClass('d-none')
+   }
+
+
+});
+

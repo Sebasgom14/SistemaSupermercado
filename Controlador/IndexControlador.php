@@ -29,10 +29,6 @@ class IndexControlador
         $est = new \Modelo\Entidades\Employees();
         $estM = new \Modelo\Metodos\EmployeesM();
 
-
-
-
-
         if (($est = $estM->BuscarUsuario($user))!= null) {
 
             if($est->getESTADE()==0){

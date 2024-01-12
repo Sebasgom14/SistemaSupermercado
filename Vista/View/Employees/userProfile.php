@@ -180,6 +180,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
+                    <input type="hidden" value="<?php echo $_SESSION['idUsuario'];?>" id="idPassUser">
                     <label for="exampleInputPassword1" class="form-label">Ingrese su contraseña anterior</label>
                     <input type="text m " class="form-control" id="OldPass">
                 </div>
@@ -187,13 +188,17 @@
                 <label for="exampleInputPassword1" class="form-label">Nueva contraseña</label>
                 <div class="mb-3 d-flex align-items-center">
                     <input type="text" class="form-control" id="NewPass" disabled>
-                    <button type="button" class="btn btn-primary ms-2" id="RandomPass"><i class="fa-solid fa-shuffle"></i></button>
+                    <button type="button" class="btn btn-primary ms-2 " id="RandomPass" disabled><i class="fa-solid fa-shuffle"></i></button>
                 </div>
 
 
                 <div class="mb-3 ">
                     <label for="exampleInputPassword1" class="form-label">Confirmar contraseña</label>
-                    <input type="text" class="form-control" id="confirmedPass" disabled>
+                    <input type="text" class="form-control " id="confirmedPass" disabled>
+                    <div id="validationPass" class="invalid-feedback d-none">
+                        Las contraseñas con coinciden
+                    </div>
+
                 </div>
 
 
