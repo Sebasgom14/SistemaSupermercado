@@ -114,6 +114,21 @@ class CostumersControlador
         }
     }
 
+    function getCountCostumers()
+    {
+        $eM = new \Modelo\Metodos\CostumersM();
+
+        $costumersInformation = $eM->getCountCostumers();
+        $retVal = array();
+        if ($costumersInformation != null) {
+            foreach ($costumersInformation as $costumers) {
+                $retVal[] = [
+                    'Clientes' => $costumers['Clientes'],
+                ];
+            }
+        }
+        echo json_encode($retVal);
+    }
 
 
 

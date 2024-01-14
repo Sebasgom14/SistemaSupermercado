@@ -128,5 +128,71 @@ class SalesControlador
         echo json_encode($retVal);
     }
 
+    function getCountSales()
+    {
+        $eM = new \Modelo\Metodos\SalesM();
+
+        $salesInformation = $eM->getCountSales();
+        $retVal = array();
+        if ($salesInformation != null) {
+            foreach ($salesInformation as $sales) {
+                $retVal[] = [
+                    'VentasRealizadas' => $sales['VentasRealizadas'],
+                ];
+            }
+        }
+        echo json_encode($retVal);
+    }
+
+    function getTotalSales()
+    {
+        $eM = new \Modelo\Metodos\SalesM();
+
+        $salesInformation = $eM->getTotalSales();
+        $retVal = array();
+        if ($salesInformation != null) {
+            foreach ($salesInformation as $sales) {
+                $retVal[] = [
+                    'TotalVentas' => $sales['TotalVentas'],
+                ];
+            }
+        }
+        echo json_encode($retVal);
+    }
+
+    function getDataForGrafics()
+    {
+        $eM = new \Modelo\Metodos\SalesM();
+
+        $salesInformation = $eM->getDataforGrafics();
+        $retVal = array();
+        if ($salesInformation != null) {
+            foreach ($salesInformation as $sales) {
+                $retVal[] = [
+                    'TotalVentas' => $sales['TotalVentas'],
+                    'FechaVentas' => $sales['Fecha'],
+                ];
+            }
+        }
+        echo json_encode($retVal);
+    }
+
+    function getSalesByDay()
+    {
+        $eM = new \Modelo\Metodos\SalesM();
+
+        $salesInformation = $eM->getSalesByDay();
+        $retVal = array();
+        if ($salesInformation != null) {
+            foreach ($salesInformation as $sales) {
+                $retVal[] = [
+                    'TotalVentasPorDia' => $sales['TotalVentasPorDia'],
+                    'FechaVentas' => $sales['Fecha'],
+                ];
+            }
+        }
+        echo json_encode($retVal);
+    }
+
 
 }

@@ -127,4 +127,22 @@ class CostumersM
         return $retVal;
 
     }
+
+    function getCountCostumers(){
+        $retVal = array();
+        $conexion = new Conexion();
+        $sql = "SELECT COUNT(*) as Clientes FROM CUSTOMERS;";
+        $resultado = $conexion->Ejecutar($sql);
+        if (mysqli_num_rows($resultado) > 0) {
+            while ($fila = $resultado->fetch_assoc()) {
+                $sales = array(
+                    'Clientes' => $fila['Clientes'],
+                );
+                $retVal[] = $sales;
+            }
+        } else
+            $retVal = null;
+        $conexion->Cerrar();
+        return $retVal;
+    }
 }

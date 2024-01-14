@@ -135,5 +135,86 @@ class SalesM
         return $retVal;
     }
 
+    function getCountSales(){
+        $retVal = array();
+        $conexion = new Conexion();
+        $sql = "SELECT COUNT(*) as Ventas FROM SALES;";
+        $resultado = $conexion->Ejecutar($sql);
+        if (mysqli_num_rows($resultado) > 0) {
+            while ($fila = $resultado->fetch_assoc()) {
+                $sales = array(
+                    'VentasRealizadas' => $fila['Ventas'],
+                );
+                $retVal[] = $sales;
+            }
+        } else
+            $retVal = null;
+        $conexion->Cerrar();
+        return $retVal;
+    }
+
+    function getTotalSales(){
+        $retVal = array();
+        $conexion = new Conexion();
+        $sql = "SELECT SUM(TOTALSALE) AS total
+                FROM SALES;";
+        $resultado = $conexion->Ejecutar($sql);
+        if (mysqli_num_rows($resultado) > 0) {
+            while ($fila = $resultado->fetch_assoc()) {
+                $sales = array(
+                    'TotalVentas' => $fila['total'],
+                );
+                $retVal[] = $sales;
+            }
+        } else
+            $retVal = null;
+        $conexion->Cerrar();
+        return $retVal;
+    }
+
+    function getDataforGrafics()
+    {
+        $retVal = array();
+        $conexion = new Conexion();
+        $sql = "SELECT SALEDATE, TOTALSALE
+                FROM SALES
+                WHERE ESTADE = 1; ";
+        $resultado = $conexion->Ejecutar($sql);
+        if (mysqli_num_rows($resultado) > 0) {
+            while ($fila = $resultado->fetch_assoc()) {
+                $sales = array(
+                    'Fecha' => $fila['SALEDATE'],
+                    'TotalVentas' => $fila['TOTALSALE'],
+                );
+                $retVal[] = $sales;
+            }
+        } else
+            $retVal = null;
+        $conexion->Cerrar();
+        return $retVal;
+    }
+
+    function getSalesByDay()
+    {
+        $retVal = array();
+        $conexion = new Conexion();
+        $sql = "SELECT SALEDATE, COUNT(*) as TotalVentasPorDia
+                FROM SALES
+                GROUP BY SALEDATE
+                ORDER BY SALEDATE; ";
+        $resultado = $conexion->Ejecutar($sql);
+        if (mysqli_num_rows($resultado) > 0) {
+            while ($fila = $resultado->fetch_assoc()) {
+                $sales = array(
+                    'Fecha' => $fila['SALEDATE'],
+                    'TotalVentasPorDia' => $fila['TotalVentasPorDia'],
+                );
+                $retVal[] = $sales;
+            }
+        } else
+            $retVal = null;
+        $conexion->Cerrar();
+        return $retVal;
+    }
 
 }
