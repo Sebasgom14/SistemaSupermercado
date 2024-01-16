@@ -25,7 +25,7 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <label for="exampleInputPassword1" class="form-label text-start">Contraseña</label>
-                                <a href="" class="text-decoration-none text-end">¿Olvidó su contraseña?</a>
+                                <a href="./index.php?controlador=index&accion=PasswordRestore" class="text-decoration-none text-end">¿Olvidó su contraseña?</a>
                             </div>
                             <input type="password" class="form-control" name="pass">
                         </div>

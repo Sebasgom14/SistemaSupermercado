@@ -59,6 +59,9 @@ class EmployeesM
                 $e->setPOSITION($fila["POSITION"]);
                 $e->setEMAIL_EMPLOYEES($fila["EMAIL_EMPLOYEES"]);
                 $e->setPASSWORD($fila["PASSWORD"]);
+                $e->setSecurityCode($fila["SecurityCode"]);
+                $e->setCodeExpiration(   $fila["CodeExpiration"]);
+
             }
         }
         else
@@ -212,6 +215,37 @@ class EmployeesM
         $sql="UPDATE `EMPLOYEES` SET `PASSWORD`='".$e->getPASSWORD()."' WHERE ID_EMPLOYEE = ".$e->getID_EMPLOYEE();
         if($conexion->Ejecutar($sql))
             $retVal=true;
+        $conexion->Cerrar();
+        return $retVal;
+    }
+
+    function GenerateCodePass($id, $codigoUnico, $codigoExpiracion)
+    {
+        $retVal = false;
+        $conexion = new Conexion();
+
+        // La columna `SecurityCode` debe ser actualizada a `SecurityCode` y `CodeExpiration`
+        $sql = "UPDATE `EMPLOYEES` SET `SecurityCode` = '$codigoUnico', `CodeExpiration` = '$codigoExpiracion' WHERE ID_EMPLOYEE = $id";
+
+        if ($conexion->Ejecutar($sql)) {
+            $retVal = true;
+        }
+
+        $conexion->Cerrar();
+        return $retVal;
+    }
+
+    function DesactivarCodePass($id)
+    {
+        $retVal = false;
+        $conexion = new Conexion();
+
+        // La columna `SecurityCode` debe ser actualizada a `SecurityCode` y `CodeExpiration`
+        $sql = "UPDATE `EMPLOYEES` SET `SecurityCode` = 'null', `CodeExpiration` = 'null' WHERE ID_EMPLOYEE = $id";
+        if ($conexion->Ejecutar($sql)) {
+            $retVal = true;
+        }
+
         $conexion->Cerrar();
         return $retVal;
     }

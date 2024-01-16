@@ -17,6 +17,44 @@ class Employees
 
     private $NamePosition;
 
+    private $SecurityCode;
+
+    private $CodeExpiration;
+
+    /**
+     * @return mixed
+     */
+    public function getSecurityCode()
+    {
+        return $this->SecurityCode;
+    }
+
+    /**
+     * @param mixed $SecurityCode
+     */
+    public function setSecurityCode($SecurityCode): void
+    {
+        $this->SecurityCode = $SecurityCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodeExpiration()
+    {
+        return $this->CodeExpiration;
+    }
+
+    /**
+     * @param mixed $CodeExpiration
+     */
+    public function setCodeExpiration($CodeExpiration): void
+    {
+        $this->CodeExpiration = $CodeExpiration;
+    }
+
+
+
     /**
      * @return mixed
      */
