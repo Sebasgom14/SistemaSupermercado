@@ -32,6 +32,7 @@ class IndexControlador
 
     function Password()
     {
+        date_default_timezone_set('America/Costa_Rica');
         $est = new \Modelo\Entidades\Employees();
         $estM = new \Modelo\Metodos\EmployeesM();
         $send = new MailControlador();
@@ -51,9 +52,6 @@ class IndexControlador
                     '<p><a href="http://127.0.0.1/SUPERMARKET/index.php?controlador=index&accion=CodigoPassword&codigo=' . $est->getID_EMPLOYEE() . '">Restablecer contraseña</a></p>'
 
                 );
-
-
-
                 echo json_encode(true);
                 exit(); // Agregado para evitar que el script siga ejecutándose
             } else {

@@ -87,7 +87,15 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
                         Proveedores
                     </a>
+                    <a class="nav-link" href="./index.php?controlador=Promotions&accion=Principal">
+                        <div class="sb-nav-link-icon"><i class="fas fa-gift"></i></div>
+                        Promociones
+                    </a>
 
+                    <a class="nav-link" href="./index.php?controlador=TypePromotions&accion=Principal">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
+                        Tipo promociones
+                    </a>
                 </div>
             </div>
         </nav>

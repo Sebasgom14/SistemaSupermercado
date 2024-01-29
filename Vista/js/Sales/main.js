@@ -50,21 +50,33 @@ function selectClient(){
 
 function listProducts() {
     $.ajax({
-        url: './index.php?controlador=Products&accion=Todos',
+        url: './index.php?controlador=Inventory&accion=Todos',
         method: 'POST',
         dataType: 'json',
         success: function (data) {
             // Limpiar la tabla antes de agregar nuevas filas
             $('#tableproducts tbody').empty();
 
-            // Iterar sobre los datos y agregar filas a la tabla
-            $.each(data, function (index, product) {
+            // Obtener los IDs de los productos en la tabla productsSales
+            var productsSalesIds = $('#productsSales tbody tr').map(function () {
+                return $(this).data('id');
+            }).get();
+
+            // Filtrar productos que no estén en la tabla productsSales
+            var filteredData = data.filter(function (product) {
+                return !productsSalesIds.includes(product.id);
+            });
+
+            // Iterar sobre los datos filtrados y agregar filas a la tabla
+            $.each(filteredData, function (index, product) {
                 var newRow = '<tr data-id="' + product.id + '">' +
-                    '<td>' + product.nombre + '</td>' +
+                    '<td>' + product.nombreProducto + '</td>' +
                     '<td>' + product.precio + '</td>' +
                     '<td><img src="' + product.imagen + '" alt="Imagen del producto" style="max-width: 100px;"></td>' +
                     '<td>' +
-                    '<button type="button" class="btn btn-success btn-sm" onclick="agregarProducto(' + product.id + ')">' +
+                    '<button type="button" class="btn btn-success btn-sm" ' +
+                    'onclick="agregarProducto(' + product.id + ',' + product.cantidadProduct + ',' +
+                    product.descuento + ',' + product.cantidadMinima + ',' + product.cantidadMaxima + ',' + product.estadoPromocion + ')">' +
                     '<i class="fas fa-plus"></i> Agregar' +
                     '</button>' +
                     '</td>' +
@@ -90,51 +102,119 @@ function listProducts() {
     });
 }
 
-function agregarProducto(id) {
-    // Obtener los datos del producto seleccionado
-    var productRow = $('#tableproducts tbody tr[data-id="' + id + '"]');
-    var productName = productRow.find('td:first').text();
-    var productPrice = parseFloat(productRow.find('td:eq(1)').text());
-    var productImage = productRow.find('td:eq(2) img').attr('src');
 
-    // Crear la nueva fila para la segunda tabla
-    var newRow = '<tr data-id="' + id + '">' +
-        '<td><img src="' + productImage + '" alt="Imagen del producto" style="max-width: 50px;"></td>' +
-        '<td class="product-name">' + productName + '</td>' +
-        '<td>' +
-        '<input type="number" class="form-control quantity-input" id="quantity-' + id + '" value="1">' +
-        '</td>' +
-        '<td class="price">' + productPrice + '</td>' +
-        '<td class="subtotal">' + productPrice + '</td>' +
-        '<td>' +
-        '<button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">' +
-        '<i class="fas fa-trash-alt"></i>' +
-        '</button>' +
-        '</td>' +
-        '</tr>';
 
-    // Agregar la nueva fila a la segunda tabla
-    $('#productsSales tbody').append(newRow);
+function agregarProducto(id, cantidadDisponible, descuento, cantidadMinima, cantidadMaxima,estadoPromocion) {
+    // Verificar si el producto ya está en la tabla
+    var existingRow = $('#productsSales tbody tr[data-id="' + id + '"]');
 
-    // Agregar evento de cambio al input de cantidad
-    $('#quantity-' + id).on('input', function () {
-        calcularSubtotal(id);
-        calcularTotales(); // Calcular totales después de cambiar la cantidad
-    });
+    if (existingRow.length > 0) {
+        // El producto ya está en la tabla, aumentar la cantidad hasta el límite disponible
+        var currentQuantity = parseInt(existingRow.find('.quantity-input').val());
+        var newQuantity = currentQuantity + 1;
 
-    // Calcular totales después de agregar el producto
+        if (newQuantity <= cantidadDisponible) {
+            // Actualizar la cantidad si no excede el límite
+            existingRow.find('.quantity-input').val(newQuantity);
+
+            // Habilitar el botón y quitar la clase is-invalid
+            $('#addSales').prop('disabled', false);
+            $('#quantity-' + id).removeClass('is-invalid');
+        } else {
+            // Deshabilitar el botón y agregar la clase is-invalid
+            $('#addSales').prop('disabled', true);
+            $('#quantity-' + id).addClass('is-invalid');
+        }
+
+
+
+    } else {
+        // Obtener los datos del producto seleccionado
+        var productRow = $('#tableproducts tbody tr[data-id="' + id + '"]');
+        var productName = productRow.find('td:first').text();
+        var productPrice = parseFloat(productRow.find('td:eq(1)').text());
+        var productImage = productRow.find('td:eq(2) img').attr('src');
+
+        // Aplicar lógica de descuento y promoción
+        var discountedPrice = productPrice;  // Precio por defecto
+
+        if(estadoPromocion==1){
+            if (descuento != 0.00) {
+                discountedPrice = productPrice - (productPrice * (descuento/100));
+            }
+        }
+
+
+
+        // Crear la nueva fila para la segunda tabla
+        var newRow = '<tr data-id="' + id + '" data-descuento="' + descuento + '" data-cantidad-minima="' + cantidadMinima + '" data-cantidad-maxima="' + cantidadMaxima + '" data-cantidad-agregada="0">' +
+            '<td><img src="' + productImage + '" alt="Imagen del producto" style="max-width: 50px;"></td>' +
+            '<td class="product-name">' + productName + '</td>' +
+            '<td>' +
+            '<input type="number" class="form-control quantity-input is-invalid" id="quantity-' + id + '" value="1" max="' + cantidadDisponible + '">' +
+            '</td>' +
+            '<td class="price">' + discountedPrice + '</td>' +
+            '<td class="subtotal">' + discountedPrice + '</td>' +
+            '<td>' +
+            '<button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">' +
+            '<i class="fas fa-trash-alt"></i>' +
+            '</button>' +
+            '</td>' +
+            '</tr>';
+
+        // Agregar la nueva fila a la segunda tabla
+        $('#productsSales tbody').append(newRow);
+
+        // Agregar evento de cambio al input de cantidad
+        $('#quantity-' + id).on('input', function () {
+            var newQuantity = parseInt($(this).val());
+
+            // Lógica para promoción 2x1
+            var cantidadMinima = $(this).closest('tr').data('cantidad-minima');
+            var cantidadMaxima = $(this).closest('tr').data('cantidad-maxima');
+            var cantidadAgregada = $(this).closest('tr').data('cantidad-agregada');
+
+            if (estadoPromocion == 1) {
+                if (cantidadAgregada < cantidadMinima && (cantidadAgregada + newQuantity) >= cantidadMinima) {
+                    var quantityForFree = Math.floor((cantidadAgregada + newQuantity) / (cantidadMinima + cantidadMaxima));
+                    var totalPrice = (newQuantity - quantityForFree) * discountedPrice;
+
+                    // Actualizar cantidad agregada
+                    $(this).closest('tr').data('cantidad-agregada', cantidadAgregada + newQuantity);
+                } else {
+                    // Actualizar subtotal de manera normal
+                    $(this).closest('tr').find('.subtotal').text(discountedPrice * newQuantity);
+                }
+            }
+
+
+
+            if (newQuantity <= cantidadDisponible) {
+                // Habilitar el botón y quitar la clase is-invalid
+                $('#addSales').prop('disabled', false);
+                $(this).removeClass('is-invalid');
+            } else {
+                // Deshabilitar el botón y agregar la clase is-invalid
+                $('#addSales').prop('disabled', true);
+                $(this).addClass('is-invalid');
+            }
+            calcularSubtotal(id);
+            calcularTotales(); // Calcular totales después de cambiar la cantidad
+        });
+
+        // Habilitar el botón y quitar la clase is-invalid
+        $('#addSales').prop('disabled', false);
+        $('#quantity-' + id).removeClass('is-invalid');
+    }
+
+    calcularSubtotal(id);
     calcularTotales();
-
 }
 
-function calcularSubtotal(id) {
-    var quantity = parseInt($('#quantity-' + id).val());
-    var price = parseFloat($('#productsSales tbody tr[data-id="' + id + '"] .price').text());
-    var subtotal = quantity * price;
 
-    // Actualizar el subtotal en la fila correspondiente
-    $('#productsSales tbody tr[data-id="' + id + '"] .subtotal').text(subtotal);
-}
+
+
+
 
 function eliminarFila(button) {
     // Obtener la fila padre del botón y eliminarla
@@ -143,7 +223,19 @@ function eliminarFila(button) {
     calcularTotales();
 }
 
+function calcularSubtotal(id) {
+    var quantity = parseInt($('#quantity-' + id).val());
+    var price = parseFloat($('#productsSales tbody tr[data-id="' + id + '"] .price').text());
+    var subtotal = quantity * price;
+
+    // Actualizar el subtotal en la fila correspondiente
+    $('#productsSales tbody tr[data-id="' + id + '"] .subtotal').text(redondear(subtotal).toFixed(2));
+}
+
 function calcularTotales() {
+
+
+
     var subTotalVenta = 0;
 
     // Iterar sobre las filas de la tabla #productsSales
@@ -152,13 +244,19 @@ function calcularTotales() {
         subTotalVenta += subtotal;
     });
 
-    var ivaVenta = subTotalVenta * 0.13; // Suponiendo que el IVA es del 16%
+    var ivaVenta = subTotalVenta * 0.13; // Suponiendo que el IVA es del 13%
     var totalVenta = subTotalVenta + ivaVenta;
 
     // Actualizar los valores en los campos de entrada correspondientes
-    $('#subTotalsales').val(subTotalVenta.toFixed(2));
-    $('#ivasales').val(ivaVenta.toFixed(2));
-    $('#totalsales').val(totalVenta.toFixed(2));
+    $('#subTotalsales').val(redondear(subTotalVenta).toFixed(2));
+    $('#ivasales').val(redondear(ivaVenta).toFixed(2));
+    $('#totalsales').val(redondear(totalVenta).toFixed(2));
+}
+
+// Función para redondear según las reglas de Costa Rica
+function redondear(numero) {
+    // Redondear al múltiplo de 5 más cercano
+    return Math.round(numero / 5) * 5;
 }
 
 

@@ -156,7 +156,8 @@ class MailControlador
     }
 
     function obtenerFechaActual() {
-        // Crea un objeto DateTime con la fecha y hora actuales
+
+        date_default_timezone_set('America/Costa_Rica');
         $fechaActual = new DateTime();
 
         // Formatea la fecha según tus necesidades

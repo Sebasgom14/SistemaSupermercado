@@ -19,11 +19,17 @@ class InventoryM
             while ($fila = $resultado->fetch_assoc()) {
                 $retVal[] = array(
                     'imagen' => $fila["IMAGE_PATH"],
-                    'nombreProducto' => $fila["NAME"],
+                    'nombreProducto' => $fila["PRODUCTNAME"],
                     'cantidadProduct' => $fila["QUANTITYINSTOCK"],
                     'categoria' => $fila["CATEGORYNAME"],
                     'proveedor' => $fila["COMPANYNAME"],
                     'precio' => $fila["PRICE"],
+                    'idProducto' => $fila["ID_PRODUCT"],
+                    'namePromotions' => $fila["namePromotions"],
+                    'descuento' => $fila["DISCOUNT"],
+                    'Cminima' => $fila["MINIMUM_QUANTITY"],
+                    'Cmaxima' => $fila["MAX_QUANTITY"],
+                    'estadePromotion' => $fila["PROMOTION_ESTADE"],
                 );
             }
         } else

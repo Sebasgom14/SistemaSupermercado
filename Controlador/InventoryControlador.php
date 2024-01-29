@@ -17,6 +17,35 @@ class InventoryControlador
         require_once './Vista/View/Inventory/Index.php';
     }
 
+    function Todos()
+    {
+        $eM = new \Modelo\Metodos\InventoryM();
+
+        $inventoryInformation = $eM->ViewAll();
+        $retVal = array();
+        if ($inventoryInformation != null) {
+            foreach ($inventoryInformation as $inventory) {
+                $retVal[] = [
+                    'id' => $inventory['idProducto'],
+                    'cantidadProduct' => $inventory['cantidadProduct'],
+                    'nombreProducto' => $inventory['nombreProducto'],
+                    'precio' => $inventory['precio'],
+                    'imagen' => $inventory['imagen'],
+                    'descuento' => $inventory['descuento'],
+                    'cantidadMinima' => $inventory['Cminima'],
+                    'cantidadMaxima' => $inventory['Cmaxima'],
+                    'estadoPromocion' => $inventory['estadePromotion'],
+                ];
+            }
+        }
+        echo json_encode($retVal);
+    }
+
+
+
+
+
+
     function searchbyId(){
         $eM = new \Modelo\Metodos\InventoryM();
         $id = $_POST["idCategory"];
