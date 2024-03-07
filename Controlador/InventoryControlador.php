@@ -31,10 +31,6 @@ class InventoryControlador
                     'nombreProducto' => $inventory['nombreProducto'],
                     'precio' => $inventory['precio'],
                     'imagen' => $inventory['imagen'],
-                    'descuento' => $inventory['descuento'],
-                    'cantidadMinima' => $inventory['Cminima'],
-                    'cantidadMaxima' => $inventory['Cmaxima'],
-                    'estadoPromocion' => $inventory['estadePromotion'],
                 ];
             }
         }
@@ -93,6 +89,7 @@ class InventoryControlador
         }
         echo json_encode($retVal);
     }
+
 
 
 }

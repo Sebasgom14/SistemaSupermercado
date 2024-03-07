@@ -16,19 +16,17 @@ $('#identification').on('keypress', function(e) {
     if (e.which === 13) {
         $('#load').removeClass('d-none');
         $.ajax({
-            url: './index.php?controlador=Civil&accion=getInformation',
-            method: 'POST',
-            data: {
-                cedula:cedula
-            },
+            url: 'https://apis.gometa.org/cedulas/' + cedula,
+            method: 'GET',
             dataType: 'json',
             success: function (data) {
                 $('#load').addClass('d-none');
-                if (data.length > 0) {
-                    var persona = data[0];
+                if (data.results && data.results.length > 0) {
+                    var persona = data.results[0];
 
-                    $('#nombre').val(persona.nombre);
-                    $('#apellidos').val(persona.apellidoFirst+persona.apellidoSecond);
+                    // Accede a las propiedades dentro de persona
+                    $('#nombre').val(persona.firstname);
+                    $('#apellidos').val(persona.lastname);
                 } else {
                     console.error('No se recibieron datos válidos del servidor.');
                 }
@@ -50,19 +48,16 @@ $('#identificationView').on('keypress', function(e) {
     if (e.which === 13) {
         $('#loadEdit').removeClass('d-none');
         $.ajax({
-            url: './index.php?controlador=Civil&accion=getInformation',
-            method: 'POST',
-            data: {
-                cedula:cedula
-            },
+            url: 'https://apis.gometa.org/cedulas/' + cedula,
+            method: 'GET',
             dataType: 'json',
             success: function (data) {
                 $('#loadEdit').addClass('d-none');
-                if (data.length > 0) {
-                    var persona = data[0];
+                if (data.results && data.results.length > 0) {
+                    var persona = data.results[0];
 
-                    $('#nombreView').val(persona.nombre);
-                    $('#apellidosView').val(persona.apellidoFirst+persona.apellidoSecond);
+                    $('#nombreView').val(persona.firstname);
+                    $('#apellidosView').val(persona.lastname);
                 } else {
                     console.error('No se recibieron datos válidos del servidor.');
                 }

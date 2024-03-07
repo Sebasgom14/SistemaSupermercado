@@ -83,10 +83,6 @@
                         Ventas
                     </a>
 
-                    <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">
-                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
-                        Proveedores
-                    </a>
                     <a class="nav-link" href="./index.php?controlador=Promotions&accion=Principal">
                         <div class="sb-nav-link-icon"><i class="fas fa-gift"></i></div>
                         Promociones
@@ -97,6 +93,17 @@
                         Tipo promociones
                     </a>
 
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                        Proveedores
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">Lista proveedores</a>
+                            <a class="nav-link" href="./index.php?controlador=OrderP&accion=Principal">Ordenes de compra</a>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -113,7 +120,7 @@
                     <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <div class="row">
-                                <div class="col-6 text-center">
+                                <div class="col-md-6 text-center">
                                     <div class="mb-3">
                                         <label for="disabledSelect" class="form-label">Cliente</label>
                                         <select id="clientSelect" class="form-select">
@@ -121,34 +128,34 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-2 text-center">
+                                <div class="col-md-2 text-center">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">SubTotal de la venta</label>
                                         <input type="number" class="form-control" id="subTotalsales" disabled>
                                     </div>
                                 </div>
-                                <div class="col-2 text-center">
+                                <div class="col-md-2 text-center">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Iva de la venta</label>
                                         <input type="number" class="form-control" id="ivasales" disabled>
                                     </div>
                                 </div>
-                                <div class="col-2 text-center">
+                                <div class="col-md-2 text-center">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Total de la venta</label>
                                         <input type="number" class="form-control" id="totalsales" disabled>
                                     </div>
                                 </div>
 
-                                <div class="col-6 text-start">
-                                    <button type="button" class="btn btn-success" id="addSales" >Crear Factura <i class="fa-solid fa-plus ps-2"></i></button>
+                                <div class="col-md-6 text-md-start text-center mt-3 mt-md-0">
+                                    <button type="button" class="btn btn-success" id="addSales">Crear Factura <i class="fa-solid fa-plus ps-2"></i></button>
                                 </div>
 
-                                <div class="col-6 text-end">
+                                <div class="col-md-6 text-md-end text-center mt-3 mt-md-0">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listproducts" id="addProduct" disabled>Agregar producto <i class="fa-solid fa-cart-plus ps-2"></i></button>
                                 </div>
 
-                                <div class="col-12">
+                                <div class="col-12 mt-3">
                                     <div class="table-responsive">
                                         <table class="table" id="productsSales">
                                             <thead>
@@ -168,6 +175,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -260,36 +268,34 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-6 text-center">
+                    <div class="col-md-6 text-center">
                         <div class="mb-3">
                             <label for="disabledSelect" class="form-label">Cliente</label>
-                            <select id="clientSelectView" class="form-select" disabled>
-                            </select>
+                            <select id="clientSelectView" class="form-select" disabled></select>
                         </div>
                     </div>
-                    <div class="col-2 text-center">
+                    <div class="col-md-2 text-center">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">SubTotal de la venta</label>
                             <input type="number" class="form-control" id="subTotalsalesView" disabled>
                         </div>
                     </div>
-                    <div class="col-2 text-center">
+                    <div class="col-md-2 text-center">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Iva de la venta</label>
                             <input type="number" class="form-control" id="ivasalesView" disabled>
                         </div>
                     </div>
-                    <div class="col-2 text-center">
+                    <div class="col-md-2 text-center">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Total de la venta</label>
                             <input type="number" class="form-control" id="totalsalesView" disabled>
                         </div>
                     </div>
 
-                    <div class="col-6">
-                        <p>Fecha de la venta: <span id="dateView"></span>   </p>
+                    <div class="col-12">
+                        <p>Fecha de la venta: <span id="dateView"></span></p>
                     </div>
-
 
                     <div class="col-12">
                         <div class="table-responsive">
@@ -303,8 +309,7 @@
                                     <th scope="col">SubTotal</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -313,6 +318,7 @@
         </div>
     </div>
 </div>
+
 
 
 

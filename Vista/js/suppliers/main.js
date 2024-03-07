@@ -8,28 +8,25 @@ $(document).ready(function() {
 
 });
 
-$("#addProveedor").click(function (){
-    let nombreProveedor = $("#nameProveedor").val();
-    let contactProveedor = $("#contactProveedor").val();
-    let phoneProveedor = $("#phoneProveedor").val();
-    let correoProveedor = $("#emailProveedor").val();
+$("#addProveedor").click(function (e) {
+    e.preventDefault();  // Evitar el comportamiento predeterminado del formulario
 
-    var data = {
-        nameProveedor: nombreProveedor,
-        contactoProveedor: contactProveedor,
-        emailProveedor: correoProveedor,
-        phoneProveedor: phoneProveedor,
-    };
-
-
+    let formData = new FormData();
+    formData.append('nameProveedor', $("#nameProveedor").val());
+    formData.append('contactoProveedor', $("#contactProveedor").val());
+    formData.append('phoneProveedor', $("#phoneProveedor").val());
+    formData.append('emailProveedor', $("#emailProveedor").val());
+    formData.append('imageProduct', $('#imageSupplier')[0].files[0]);
 
     $.ajax({
         url: './index.php?controlador=Supplier&accion=insert',
         method: 'POST',
-        data: data,
+        data: formData,
         dataType: 'json',
+        contentType: false,  // Indicar que no se debe configurar el tipo de contenido
+        processData: false,  // Indicar que no se deben procesar los datos
         success: function (data) {
-            if(data==true){
+            if (data == true) {
                 Swal.fire({
                     icon: "success",
                     title: "¡Registro exitoso del proveedor!",
@@ -38,8 +35,8 @@ $("#addProveedor").click(function (){
                 }).then(() => {
                     location.reload();
                 });
-                $('#newProveedor').modal('hide');;
-            }else{
+                $('#newProveedor').modal('hide');
+            } else {
                 Swal.fire({
                     icon: "danger",
                     title: "¡Registro no exitoso del proveedor!",
@@ -56,6 +53,7 @@ $("#addProveedor").click(function (){
         }
     });
 });
+
 
 
 $(".edit").click(function (){
@@ -185,3 +183,22 @@ $("#desactivarProveedor").click(function (){
         }
     });
 });
+
+$("#imageSupplier").change(function() {
+
+    readURL(this);
+});
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+        $('#previewImage').removeClass('d-none');
+
+        reader.onload = function(e) {
+            $('#previewImage').attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}

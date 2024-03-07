@@ -37,13 +37,15 @@ class SupplierM
         $retVal = false;
         $conexion = new Conexion();
 
-        $sql = "INSERT INTO SUPPLIERS (COMPANYNAME, CONTACTPERSON, PHONENUMBER, EMAIL, ESTADE) VALUES (
+        $sql = "INSERT INTO SUPPLIERS (COMPANYNAME, CONTACTPERSON, PHONENUMBER, EMAIL, ESTADE,IMAGE_PATH) VALUES (
                 '" . $es->getCompanyName() . "',
                 '" . $es->getContactPerson() . "',
                 '" . $es->getPhoneNumber() . "',
                 '" . $es->getEmail() . "',
-                " . $es->getStatus() . "
+                '" . $es->getStatus() . "',
+                '" . $es->getImagePath() . "'
                 )";
+        //print_r($sql);
         if ($conexion->Ejecutar($sql))
             $retVal = true;
         $conexion->Cerrar();
@@ -97,6 +99,25 @@ class SupplierM
         $conexion->Cerrar();
         return $retVal;
 
+    }
+
+    function getMail($id){
+        $retVal = array();
+        $conexion = new Conexion();
+        $sql = "SELECT * FROM SUPPLIERS WHERE ID_SUPPLIER=$id;";
+        $resultado = $conexion->Ejecutar($sql);
+        if (mysqli_num_rows($resultado) > 0) {
+            while ($fila = $resultado->fetch_assoc()) {
+                $information = array(
+                    'EMAIL' => $fila["EMAIL"],
+                    'NOMBRE' => $fila["COMPANYNAME"],
+                );
+                $retVal[] = $information; // Cambio aquí
+            }
+        } else
+            $retVal = null;
+        $conexion->Cerrar();
+        return $retVal;
     }
 
 

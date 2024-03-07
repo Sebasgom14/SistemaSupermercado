@@ -83,10 +83,6 @@
                         Ventas
                     </a>
 
-                    <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">
-                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
-                        Proveedores
-                    </a>
                     <a class="nav-link" href="./index.php?controlador=Promotions&accion=Principal">
                         <div class="sb-nav-link-icon"><i class="fas fa-gift"></i></div>
                         Promociones
@@ -96,6 +92,18 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
                         Tipo promociones
                     </a>
+
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                        Proveedores
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">Lista proveedores</a>
+                            <a class="nav-link" href="./index.php?controlador=OrderP&accion=Principal">Ordenes de compra</a>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -177,29 +185,39 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Nombre de la empresa</label>
-                            <input type="text" class="form-control" id="nameProveedor" aria-describedby="emailHelp">
+                <form enctype="multipart/form-data">
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Nombre de la empresa</label>
+                                <input type="text" class="form-control" id="nameProveedor" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Persona de contacto</label>
+                                <input type="text" class="form-control" id="contactProveedor" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Imagen del proveedor</label>
+                                <input type="file" class="form-control" id="imageSupplier" aria-describedby="emailHelp">
+                            </div>
+
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Persona de contacto</label>
-                            <input type="text" class="form-control" id="contactProveedor" aria-describedby="emailHelp">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Telefono de la empresa</label>
+                                <input type="number" class="form-control" id="phoneProveedor" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Correo de la empresa</label>
+                                <input type="email" class="form-control" id="emailProveedor" aria-describedby="emailHelp">
+                            </div>
+                            <img id="previewImage" src="#" style="width:383px; height: 172px "  class="d-none">
                         </div>
 
                     </div>
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Telefono de la empresa</label>
-                            <input type="number" class="form-control" id="phoneProveedor" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Correo de la empresa</label>
-                            <input type="email" class="form-control" id="emailProveedor" aria-describedby="emailHelp">
-                        </div>
-                    </div>
-                </div>
+                </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

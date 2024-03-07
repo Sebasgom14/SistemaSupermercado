@@ -11,6 +11,26 @@ class Supliers
     private $email;
     private $status;
 
+    private $image_Path;
+
+    /**
+     * @return mixed
+     */
+    public function getImagePath()
+    {
+        return $this->image_Path;
+    }
+
+    /**
+     * @param mixed $image_Path
+     */
+    public function setImagePath($image_Path): void
+    {
+        $this->image_Path = $image_Path;
+    }
+
+
+
     // Métodos getter y setter para cada propiedad
 
     public function getIdSupplier() {

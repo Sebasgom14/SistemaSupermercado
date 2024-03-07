@@ -55,8 +55,16 @@ class SupplierControlador
         $e->setPhoneNumber($_POST["phoneProveedor"]);
         $e->setStatus(1);
 
-        if ($eM->insert($e)) {
-            echo json_encode(true);
+        $targetDir = "./Vista/filesRepository/SupplierImages/"; // Ruta de la carpeta donde se guardarán las imágenes
+        $targetFile = $targetDir . basename($_FILES["imageProduct"]["name"]);
+
+        if (move_uploaded_file($_FILES["imageProduct"]["tmp_name"], $targetFile)) {
+            $e->setImagePath($targetFile);
+            if ($eM->insert($e)) {
+                echo json_encode(true);
+            } else {
+                echo json_encode(false);
+            }
         } else {
             echo json_encode(false);
         }

@@ -16,6 +16,9 @@ class Conexion
             die('Error en conexion('.mysqli_connect_errno().')'.mysqli_connect_error());
         }
 
+        // Configurar el número máximo de conexiones
+        $this->mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 8);
+
         $this->mysqli->autocommit(TRUE);
         $resultado = $this->mysqli->query($query);
         return $resultado;

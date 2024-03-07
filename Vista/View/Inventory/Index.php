@@ -84,10 +84,6 @@
                         Ventas
                     </a>
 
-                    <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">
-                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
-                        Proveedores
-                    </a>
                     <a class="nav-link" href="./index.php?controlador=Promotions&accion=Principal">
                         <div class="sb-nav-link-icon"><i class="fas fa-gift"></i></div>
                         Promociones
@@ -97,6 +93,18 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
                         Tipo promociones
                     </a>
+
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                        Proveedores
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">Lista proveedores</a>
+                            <a class="nav-link" href="./index.php?controlador=OrderP&accion=Principal">Ordenes de compra</a>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -177,45 +185,7 @@
                                             <p class="card-text">Cantidad: <?php echo $e["cantidadProduct"] ?></p>
                                             <p class="card-text">Categoria: <?php echo $e["categoria"] ?></p>
                                             <p class="card-text">Proveedor: <?php echo $e["proveedor"] ?></p>
-
-                                            <?php
-                                            if ($e["estadePromotion"] == 1) {
-                                                ?>
-                                                <?php
-                                                if ($e["descuento"] != 0.00) {
-
-                                                    $precioOriginal = $e["precio"]; // Puedes cambiar esto con tu precio original
-                                                    $descuento = $e["descuento"]; // Puedes cambiar esto con tu descuento
-                                                    $precioFinal = $precioOriginal - ($precioOriginal * ($descuento / 100));
-
-                                                    ?>
-                                                    <div class="d-flex flex-row mb-3">
-                                                        <div class="p-2"><p class="card-text">
-                                                                Precio: <?php echo $e["precio"] ?></p></div>
-                                                        <div class="p-2">Articulo con promocion</div>
-                                                    </div>
-                                                    <?php
-                                                } else {
-                                                    ?>
-                                                    <div class="d-flex flex-row mb-3">
-                                                        <div class="p-2"><p class="card-text">Precio:</p></div>
-                                                        <div class="p-2"><p
-                                                                    class="card-text text-decoration-line-through text-danger"> <?php echo $e["precio"] ?></p>
-                                                        </div>
-                                                        <div class="p-2"><p
-                                                                    class="card-text text text-success"> <?php echo $precioFinal ?></p>
-                                                        </div>
-                                                    </div>
-                                                    <?php
-                                                }
-                                                ?>
-                                                <?php
-                                            } else {
-                                                ?>
-                                                <p class="card-text">Precio: <?php echo $e["precio"] ?></p>
-                                                <?php
-                                            }
-                                            ?>
+                                            <p class="card-text">Precio: <?php echo $e["precio"] ?></p>
                                         </div>
                                     </div>
                                 </div>

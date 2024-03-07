@@ -25,11 +25,6 @@ class InventoryM
                     'proveedor' => $fila["COMPANYNAME"],
                     'precio' => $fila["PRICE"],
                     'idProducto' => $fila["ID_PRODUCT"],
-                    'namePromotions' => $fila["namePromotions"],
-                    'descuento' => $fila["DISCOUNT"],
-                    'Cminima' => $fila["MINIMUM_QUANTITY"],
-                    'Cmaxima' => $fila["MAX_QUANTITY"],
-                    'estadePromotion' => $fila["PROMOTION_ESTADE"],
                 );
             }
         } else
@@ -69,7 +64,7 @@ class InventoryM
         $retVal = array();
         $conexion = new Conexion();
 
-        $sql = "CALL sp_get_inventory_info_by_Id($id);";
+        $sql = "CALL sp_get_inventory_info_by_Id_Supplier($id);";
         $resultado = $conexion->Ejecutar($sql);
 
         if (mysqli_num_rows($resultado) > 0) {

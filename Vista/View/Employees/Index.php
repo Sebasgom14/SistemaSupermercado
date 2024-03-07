@@ -87,10 +87,6 @@
                         Ventas
                     </a>
 
-                    <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">
-                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
-                        Proveedores
-                    </a>
                     <a class="nav-link" href="./index.php?controlador=Promotions&accion=Principal">
                         <div class="sb-nav-link-icon"><i class="fas fa-gift"></i></div>
                         Promociones
@@ -100,6 +96,17 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
                         Tipo promociones
                     </a>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                        Proveedores
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">Lista proveedores</a>
+                            <a class="nav-link" href="./index.php?controlador=OrderP&accion=Principal">Ordenes de compra</a>
+                        </nav>
+                    </div>
 
                 </div>
             </div>
@@ -221,7 +228,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Nombre</label>
                             <input type="text" class="form-control" id="nameEmployee" aria-describedby="emailHelp">
@@ -241,9 +248,8 @@
                                 <option>Disabled select</option>
                             </select>
                         </div>
-
                     </div>
-                    <div class="col">
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Salario</label>
                             <input type="number" class="form-control" id="salaryEmployee" aria-describedby="emailHelp">
@@ -258,12 +264,10 @@
                         </div>
                         <label for="exampleInputEmail1" class="form-label">Contraseña</label>
                         <div class="mb-3 input-group">
-
                             <input type="text" class="form-control" id="passEmployee" aria-describedby="emailHelp">
                             <button class="btn btn-primary" type="button" id="generatePassword"
                                     title="Generar contrasena"><i class="fa-solid fa-shuffle"></i></button>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -274,6 +278,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="modal fade" id="editEmployeeView" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

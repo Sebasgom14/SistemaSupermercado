@@ -48,103 +48,113 @@ class MailControlador
     }
 
 
-    function generarPDF($detallesVenta, $total, $subtotal, $iva, $nombreCliente)
+    function generarPDF($detallesVenta, $total, $iva, $subtotal, $nombreCliente)
     {
-
         $fechaActual = $this->obtenerFechaActual();
-
         $eM = new \Modelo\Metodos\ProductsM();
+
         // Configura las opciones de Dompdf
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
-
-        // Crea una instancia de Dompdf
+        $options->set('isPhpEnabled', true); // Permite la carga de recursos externos
         $dompdf = new Dompdf($options);
 
-        // HTML para el PDF con Bootstrap CSS directamente y la tabla de detalles de la venta
+        // HTML para el PDF
         $html = '
-    <html>
-        <head>
-            <style>
-                ' . file_get_contents('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css') . '
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Invoice</title>
+        <style type="text/css">
+            * {
+                font-family: Verdana, Arial, sans-serif;
+            }
+            table{
+                font-size: x-small;
+            }
+            tfoot tr td{
+                font-weight: bold;
+                font-size: x-small;
+            }
 
-                .container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: space-between;
-                    margin-bottom: 20px; /* Ajusta según sea necesario */
-                }
+            .gray {
+                background-color: lightgray
+            }
+        </style>
+    </head>
+    <body>
+        <table width="100%">
+            <tr>
+                <td align="right">
+                    <h3>Supermaket</h3>
+                    <pre>
+                        Supermarket
+                        megasuper@gmail.com
+                        Telefono: 62381914 
+                    </pre>
+                </td>
+            </tr>
+        </table>
 
-                .container > div {
-                    box-sizing: border-box;
-                    margin-bottom: 10px; /* Ajusta según sea necesario */
-                }
+        <table width="100%">
+            <tr>
+                <td><strong>Cliente:</strong> ' . $nombreCliente . '</td>
+                <td><strong>Fecha de la factura:</strong> ' . $fechaActual . '</td>
+            </tr>
+        </table>
 
-                .container > div:nth-child(odd) {
-                    flex: 0 0 48%;
-                }
+        <br/>
 
-                .container > div:nth-child(even) {
-                    flex: 0 0 30%;
-                }
-            </style>
-        </head>
-        <body>
-            <h1 class="text-center">Detalles de la Venta</h1>
-
-            <div class="container">
-                <div>
-                    <p>Cliente: ' . $nombreCliente . '</p>
-                </div>
-                <div>
-                    <p>Fecha de la compra: ' . $fechaActual . '</p>
-                </div>
-            </div>
-
-            <div class="container">
-                <div>
-                    <p>Total de la compra $: ' . $total . '</p>
-                </div>
-                <div>
-                    <p>Subtotal de la compra: $ ' . $subtotal . '</p>
-                </div>
-                <div>
-                    <p>Iva de la compra: $ ' . $iva . '</p>
-                </div>
-            </div>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nombre del producto</th>
-                        <th>Cantidad Vendida</th>
-                        <th>Precio Unitario</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>';
+        <table width="100%">
+            <thead style="background-color: lightgray;">
+                <tr>
+                    <th>Nombre Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario $</th>
+                    <th>Total </th>
+                </tr>
+            </thead>
+            <tbody>';
 
         // Agregar filas a la tabla con los detalles de la venta
         foreach ($detallesVenta as $detalle) {
             $html .= '
             <tr>
-                <td>' . $detalle['nombreProducto'] . '</td>
-                <td>' . $detalle['cantidadVendida'] . '</td>
-                <td>' . $detalle['precioUnitario'] . '</td>
-                <td>' . $detalle['subtotalDetalle'] . '</td>
+                <th align="center">' . $detalle['nombreProducto'] . '</th>
+                <td align="center">' . $detalle['cantidadVendida'] . '</td>
+                <td align="center">' . $detalle['precioUnitario'] . '</td>
+                <td align="center">' . $detalle['subtotalDetalle'] . '</td>
             </tr>';
         }
 
         // Cerrar las etiquetas del HTML
         $html .= '
-                </tbody>
-            </table>
-        </body>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td align="right">Subtotal</td>
+                    <td align="right">' . $subtotal . '</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td align="right">Iva</td>
+                    <td align="right">' . $iva . '</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td align="right">Total</td>
+                    <td align="right" class="gray">$' . $total . '</td>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
     </html>';
 
-        // Carga el HTML en Dompdf
-        $dompdf->loadHtml($html);
 
+        // Después de cargar el HTML en Dompdf
+        $dompdf->loadHtml($html);
         // Establece el tamaño y la orientación del papel
         $dompdf->setPaper('A4', 'portrait');
 
@@ -153,9 +163,117 @@ class MailControlador
 
         // Devuelve el contenido del PDF como una cadena
         return $dompdf->output();
+
+
     }
 
-    function obtenerFechaActual() {
+    function generarPDFOrden($detallesVenta,  $nombreProveedor)
+    {
+        $fechaActual = $this->obtenerFechaActual();
+        $eM = new \Modelo\Metodos\ProductsM();
+
+        // Configura las opciones de Dompdf
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true); // Permite la carga de recursos externos
+        $dompdf = new Dompdf($options);
+
+        // HTML para el PDF
+        $html = '
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Invoice</title>
+        <style type="text/css">
+            * {
+                font-family: Verdana, Arial, sans-serif;
+            }
+            table{
+                font-size: x-small;
+            }
+            tfoot tr td{
+                font-weight: bold;
+                font-size: x-small;
+            }
+
+            .gray {
+                background-color: lightgray
+            }
+        </style>
+    </head>
+    <body>
+        <table width="100%">
+            <tr>
+              <td align="left">
+                    <h3>Ordenes de compra</h3>
+                </td>
+                <td align="right">
+                    <h3>Supermaket</h3>
+                    <pre>
+                        Supermarket
+                        megasuper@gmail.com
+                        Telefono: 62381914 
+                    </pre>
+                </td>
+            </tr>
+        </table>
+
+        <table width="100%">
+            <tr>
+                <td><strong>Proveedor:</strong> ' . $nombreProveedor . '</td>
+                <td><strong>Fecha de solicitud:</strong> ' . $fechaActual . '</td>
+            </tr>
+        </table>
+
+        <br/>
+
+        <table width="100%">
+            <thead style="background-color: lightgray;">
+                <tr>
+                    <th>Nombre Producto</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+        // Agregar filas a la tabla con los detalles de la venta
+        foreach ($detallesVenta as $detalle) {
+            $html .= '
+            <tr>
+                <th align="center">' . $detalle['nombreProducto'] . '</th>
+                <td align="center">' . $detalle['cantidad'] . '</td>
+            </tr>';
+        }
+
+        // Cerrar las etiquetas del HTML
+        $html .= '
+            </tbody>
+        </table>
+    </body>
+    </html>';
+
+
+        // Después de cargar el HTML en Dompdf
+        $dompdf->loadHtml($html);
+        // Establece el tamaño y la orientación del papel
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Renderiza el documento PDF
+        $dompdf->render();
+
+        // Devuelve el contenido del PDF como una cadena
+        return $dompdf->output();
+
+
+    }
+
+
+
+
+
+    function obtenerFechaActual()
+    {
 
         date_default_timezone_set('America/Costa_Rica');
         $fechaActual = new DateTime();

@@ -9,6 +9,11 @@ class IndexControlador
 {
     function Index()
     {
+        require_once './Vista/View/Home/home.php';
+    }
+
+    function Login()
+    {
         require_once './Vista/View/Login/Login.php';
     }
 
@@ -49,7 +54,7 @@ class IndexControlador
                     '<p>¡Hola ' . $est->getFIRSTNAME() . ' ' . $est->getLASTNAME() . '!</p>' .
                     '<p>Te informamos que tu código de seguridad es: ' . $codigoUnico . '</p>' .
                     '<p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>' .
-                    '<p><a href="http://127.0.0.1/SUPERMARKET/index.php?controlador=index&accion=CodigoPassword&codigo=' . $est->getID_EMPLOYEE() . '">Restablecer contraseña</a></p>'
+                    '<p><a href="http://localhost:8080/SUPERMARKET/index.php?controlador=index&accion=CodigoPassword&codigo=' . $est->getID_EMPLOYEE() . '">Restablecer contraseña</a></p>'
 
                 );
                 echo json_encode(true);

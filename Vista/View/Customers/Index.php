@@ -82,11 +82,6 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
                         Ventas
                     </a>
-
-                    <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">
-                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
-                        Proveedores
-                    </a>
                     <a class="nav-link" href="./index.php?controlador=Promotions&accion=Principal">
                         <div class="sb-nav-link-icon"><i class="fas fa-gift"></i></div>
                         Promociones
@@ -96,6 +91,18 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
                         Tipo promociones
                     </a>
+
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                        Proveedores
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="./index.php?controlador=Supplier&accion=Principal">Lista proveedores</a>
+                            <a class="nav-link" href="./index.php?controlador=OrderP&accion=Principal">Ordenes de compra</a>
+                        </nav>
+                    </div>
 
                 </div>
             </div>
@@ -213,36 +220,37 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col">
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Identification</label>
                             <input type="number" class="form-control" id="identification" maxlength="9" minlength="9">
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="nombre"  disabled>
+                            <input type="text" class="form-control" id="nombre" disabled>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Apellidos</label>
-                            <input type="text" class="form-control" id="apellidos"  disabled>
+                            <input type="text" class="form-control" id="apellidos" disabled>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Telefono</label>
-                            <input type="number" class="form-control" id="phoneNumber" >
+                            <input type="number" class="form-control" id="phoneNumber">
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Dirrecion</label>
-                            <input type="text" class="form-control" id="address" >
+                            <input type="text" class="form-control" id="address">
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Correo</label>
-                            <input type="email" class="form-control" id="email" >
+                            <input type="email" class="form-control" id="email">
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-success" id="addCliente">Agregar cliente</button>

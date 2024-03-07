@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var dtableProduct = $('#transactionsTable').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
@@ -9,12 +9,12 @@ $(document).ready(function() {
     selectTransaction()
 });
 
-function selectProduct(){
+function selectProduct() {
     $.ajax({
         url: './index.php?controlador=Products&accion=Todos',
         method: 'POST',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             // Limpia las opciones actuales del select
             $('#productSelect').empty();
 
@@ -22,24 +22,24 @@ function selectProduct(){
             $('#productSelect').append('<option selected>Seleccione la seccion</option>');
 
             // Itera sobre los datos y agrega las opciones al select
-            data.forEach(function(item) {
+            data.forEach(function (item) {
                 $('#productSelect').append('<option value="' + item.id + '">' + item.nombre + '</option>');
             });
 
 
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error en la solicitud AJAX:', status, error);
         }
     });
 }
 
-function selectTransaction(){
+function selectTransaction() {
     $.ajax({
         url: './index.php?controlador=TransactionType&accion=Todos',
         method: 'POST',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             // Limpia las opciones actuales del select
             $('#typeTransactionSelect').empty();
 
@@ -47,20 +47,20 @@ function selectTransaction(){
             $('#typeTransactionSelect').append('<option selected>Seleccione la seccion</option>');
 
             // Itera sobre los datos y agrega las opciones al select
-            data.forEach(function(item) {
+            data.forEach(function (item) {
                 $('#typeTransactionSelect').append('<option value="' + item.id + '">' + item.nombre + '</option>');
             });
 
 
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error en la solicitud AJAX:', status, error);
         }
     });
 }
 
-$("#addTransaction").click(function (){
-    let  quantity= $("#quantity").val();
+$("#addTransaction").click(function () {
+    let quantity = $("#quantity").val();
     let type = $("#typeTransactionSelect").val();
     let product = $("#productSelect").val();
 
@@ -76,7 +76,7 @@ $("#addTransaction").click(function (){
         data: data,
         dataType: 'json',
         success: function (data) {
-            if(data==true){
+            if (data == true) {
                 Swal.fire({
                     icon: "success",
                     title: "¡Registro exitoso del movimiento!",
@@ -86,7 +86,7 @@ $("#addTransaction").click(function (){
                     location.reload();
                 });
 
-            }else{
+            } else {
                 Swal.fire({
                     icon: "danger",
                     title: "¡Registro no exitoso del movimiento!",
